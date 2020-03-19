@@ -65,6 +65,10 @@ s.maxCWIterations = 30; % Maximum number of CW iterations
 s.N = 1; % bigger is theoretically more robust, but takes longer
 s.mergeTF = 0 ;
 %%%% Plotting %%%%
+s.setPlotPar = 0; % changeable to 0 if you don't want to set specific min/max for spectra plots
+s.minFreq = 5;
+s.maxFreq = 90; 
+
 s.subPlotSet = 1; % Set to 1 if you want plots with each click type as a subplot
 s.indivPlots = 1; % Set to 1 if you want separate plots for each click type
 

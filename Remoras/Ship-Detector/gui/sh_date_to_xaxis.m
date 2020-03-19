@@ -25,6 +25,8 @@ CumAvg = cumsum([0 PARAMS.ltsa.nave(startFile:max(startFile, stopFile-1))]);
 
 % Compute bin width in hours
 BinWidth_u = PARAMS.ltsa.tave/(60*60);
+%detDur = (0.0001)/(60*60); %MAZ added for use in changing x axis labels
+windLength = stop - start; 
 
 for idx = valid
     % find the file and ltsa bin idx for the idx'th date
@@ -33,8 +35,16 @@ for idx = valid
     % the plot.
     cumAvgIdx = fileIdx - startFile + 1;
     offsetFromStart = CumAvg(cumAvgIdx) + binIdx - startIdx;
-    % Convert to x-axis units and store.
-    x(idx) = offsetFromStart * BinWidth_u;
+    %added by MAZ on 3/13/2020 so that clicks show up at correct times i/o
+    %averaged to the edges of each LTSA bin
+    if windLength <= 5/60 %if window length less than 5 min
+        xOff = datenums(idx) - start;
+        xVec = datevec(xOff);
+        x(idx) = xVec(:,4) + xVec(:,5)./60 + xVec(:,6)./(3600);
+    else
+        % Convert to x-axis units and store.
+        x(idx) = offsetFromStart * BinWidth_u;
+    end
 end
 
 function [rawIndex, tBin, present] = timeIndexBin(time)

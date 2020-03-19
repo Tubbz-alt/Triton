@@ -45,17 +45,31 @@ for iF = 1:length(nodeSet)
         warning('Frequency vector and spectra differ in length. Display errors possible in plots')
         fPlot = linspace(s.startFreq,s.endFreq,length(compositeData(iF).spectraMeanSet));
     end
-    hp2 = plot(fPlot,compositeData(iF).spectraMeanSet,'-k','lineWidth',2);
+    %hp2 = plot(fPlot,compositeData(iF).spectraMeanSet,'-k','lineWidth',2);
+    
+    if s.setPlotPar
+        plotSpec = compositeData(iF).spectraMeanSet;
+        [val lowF] = min(abs(s.minFreq - fPlot));
+        [val highF] = min(abs(s.maxFreq - fPlot));
+        
+        plotSpec = plotSpec(lowF:highF);
+        %normPlotSpec = (plotSpec - min(plotSpec))./max(plotSpec);
+        
+        hp2 = plot(fPlot(lowF:highF),plotSpec,'-k','lineWidth',2)
+        xlim([s.minFreq,s.maxFreq])
+    else
+        hp2 = plot(fPlot,compositeData(iF).spectraMeanSet,'-k','lineWidth',2)
+        xlim([fPlot(1),fPlot(end)])
+    end
     
     set(gca,'box','on','FontSize',11)
     ylim([0,1])
-    xlim([min(f),max(f)])
     plot(fPlot,compositeData(iF).specPrctile,':k','lineWidth',2)
     ylabel('Relative Amplitude','FontSize',12)
     xlabel('Frequency (kHz)','FontSize',12)
     hold off
     grid on
-    set(gca,'XMinorTick', 'on')
+    %set(gca,'XMinorTick', 'on')
     hs3Pos = get(hs3,'Position');
     
     subplot(1,3,3)

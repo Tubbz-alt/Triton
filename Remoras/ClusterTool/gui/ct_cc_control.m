@@ -123,6 +123,29 @@ elseif strcmp(action,'setICIDist')
     REMORA.ct.CC_params.iciDistTF = iciDistTF;
     REMORA.ct.CC_params.iciModeTF = ~REMORA.ct.CC_params.iciDistTF;
     
+elseif strcmp(action,'setPlotPar')
+    setPlot = get(REMORA.ct.CC_verify.setPlotParams,'Value');
+    REMORA.ct.CC_params.setPlotPar = setPlot;
+    
+    if REMORA.ct.CC_params.setPlotPar
+        showPlotParams = 'on';
+    else
+        showPlotParams = 'off';
+    end
+    
+    set(REMORA.ct.CC_verify.specPlotMinTxt,'Visible',showPlotParams)
+    set(REMORA.ct.CC_verify.specPlotMinEdTxt,'Visible',showPlotParams)
+    set(REMORA.ct.CC_verify.specPlotMaxTxt,'Visible',showPlotParams)
+    set(REMORA.ct.CC_verify.specPlotMaxEdTxt,'Visible',showPlotParams)
+    
+elseif strcmp(action,'setSpecPlotMin')
+    minFreq = str2num(get(REMORA.ct.CC_verify.specPlotMinEdTxt,'String'));
+    REMORA.ct.CC_params.minFreq = minFreq;
+    
+elseif strcmp(action,'setSpecPlotMax')
+    maxFreq = str2num(get(REMORA.ct.CC_verify.specPlotMaxEdTxt,'String'));
+    REMORA.ct.CC_params.maxFreq = maxFreq;    
+    
 elseif strcmp(action,'setClusterPruningFactor')
     clusterPruningFactor = str2double(get(REMORA.ct.CC_verify.clusterPruneEdTxt ,'String'));
     REMORA.ct.CC_params.clusterPrune = clusterPruningFactor;

@@ -17,19 +17,32 @@ for iF = 1:length(nodeSet)
     hSet(1) = figure(41); % plot spectra means and percentiles
     subplot(n1,m1,iF)
     hold on
-
+    
     fPlot = f;
-    if length(fPlot)~=size(compositeData(iF).spectraMeanSet,2) &&... 
-        length(f(s.stIdx:s.edIdx))==size(compositeData(iF).spectraMeanSet,2)
+    if length(fPlot)~=size(compositeData(iF).spectraMeanSet,2) &&...
+            length(f(s.stIdx:s.edIdx))==size(compositeData(iF).spectraMeanSet,2)
         %Catch for backward compatibility if orignial fill spectra were not stored
         fPlot = f(s.stIdx,s.edIdx);
-    elseif length(fPlot)~=size(compositeData(iF).spectraMeanSet,2) 
+    elseif length(fPlot)~=size(compositeData(iF).spectraMeanSet,2)
         warning('Frequency vector and spectra differ in length. Display errors possible in plots')
         fPlot = linspace(s.startFreq,s.endFreq,length(compositeData(iF).spectraMeanSet));
     end
-    plot(fPlot,compositeData(iF).spectraMeanSet,'-k','lineWidth',2)
-    xlim([fPlot(1),fPlot(end)])
-
+    
+    if s.setPlotPar
+        plotSpec = compositeData(iF).spectraMeanSet;
+        [val lowF] = min(abs(s.minFreq - fPlot));
+        [val highF] = min(abs(s.maxFreq - fPlot));
+        
+        plotSpec = plotSpec(lowF:highF);
+        %normPlotSpec = (plotSpec - min(plotSpec))./max(plotSpec);
+        
+        plot(fPlot(lowF:highF),plotSpec,'-k','lineWidth',2)
+        xlim([s.minFreq,s.maxFreq])
+    else
+        plot(fPlot,compositeData(iF).spectraMeanSet,'-k','lineWidth',2)
+        xlim([fPlot(1),fPlot(end)])
+    end
+    
     legend(num2str(size(nodeSet{iF},2)),'location','Southeast')
     plot(fPlot,compositeData(iF).specPrctile,'--k','lineWidth',2)
     grid on
