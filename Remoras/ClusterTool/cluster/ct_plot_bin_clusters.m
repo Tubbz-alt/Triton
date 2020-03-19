@@ -25,7 +25,7 @@ ylim([min(min(spectraMean)),...
     max(max(spectraMean))])
 hold off
 box on
-xlim([5,90])
+xlim([min(f),max(f)])
 ylim([0,1])
 ylabel('Normalized Amplitude','Fontsize',12)
 xlabel('Frequency (kHz)','Fontsize',12)
